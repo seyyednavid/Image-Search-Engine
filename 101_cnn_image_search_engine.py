@@ -37,4 +37,51 @@ vgg = VGG16(input_shape=(img_width, img_height, num_channels), include_top = Fal
 model = Model(inputs = vgg.input, outputs = vgg.layers[-1].output)
 
 # save model file
+
 model.save("models/vgg16_search_engine.h5")
+
+
+
+###########################################################################################
+# preprocessing & featurising functions
+###########################################################################################
+
+# image pre-processing function
+
+def preprocess_image(file_path):
+    
+    image = load_img(file_path, target_size = (img_width, img_height))
+    image = img_to_array(image)
+    image = np.expand_dims(image, axis = 0)
+    image = preprocess_input(image)  
+    
+    return image
+
+
+# featurise image
+
+def featurise_image(image):
+    
+    feature_vector = model.predict(image)
+    
+    return  feature_vector
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
