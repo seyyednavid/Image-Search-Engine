@@ -85,6 +85,7 @@ feature_vector_store = np.empty((0, 512))
 # pass in & featurise base image set
 
 for image in listdir(source_dir):
+
     
     # append image filename for future look up
     filename_store.append(source_dir + image)
@@ -101,6 +102,65 @@ for image in listdir(source_dir):
 # save key objects for future use
 pickle.dump(filename_store, open('models/filename_store.p', 'wb'))
 pickle.dump(feature_vector_store, open('models/feature_vector_store.p', 'wb'))
+
+
+###########################################################################################
+# pass in new image, and return similar images
+###########################################################################################
+
+# load in required objects
+
+model = load_model('models/vgg16_search_engine.h5', compile = False)
+
+filename_store = pickle.load(open('models/filename_store.p','rb'))
+feature_vector_store = pickle.load(open('models/feature_vector_store.p', 'rb'))
+
+
+# search parameters
+
+search_result_n = 8
+search_image = 'search_image_02.jpg'
+        
+# preprocess & featurise search image
+
+preprocessed_image = preprocess_image(search_image)
+search_feature_vector = featurise_image(preprocessed_image)
+
+        
+# instantiate nearest neighbours logic
+
+image_neighbors = NearestNeighbors(n_neighbors = search_result_n, metric = 'cosine')
+
+# apply to our feature vector store
+
+image_neighbors.fit(feature_vector_store)
+
+# return search results for search image (distances & indices)
+
+image_distances, image_indices = image_neighbors.kneighbors(search_feature_vector)
+
+
+# convert closest image indices & distances to lists
+
+image_indices = list(image_indices[0])
+image_distances = list(image_distances[0])
+
+# get list of filenames for search results
+
+search_result_files = [filename_store[i] for i in image_indices]
+
+# plot results
+
+plt.figure(figsize=(12,9))
+for counter, result_file in enumerate(search_result_files):    
+    image = load_img(result_file)
+    ax = plt.subplot(3, 3, counter+1)
+    plt.imshow(image)
+    plt.text(0, -5, round(image_distances[counter],3))
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+plt.show()
+
 
 
 
