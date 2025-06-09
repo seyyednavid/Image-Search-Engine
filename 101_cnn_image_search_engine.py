@@ -68,6 +68,39 @@ def featurise_image(image):
 
 
 
+###########################################################################################
+# featurise base images
+###########################################################################################
+
+# source directory for base images
+
+source_dir = 'data/'
+
+# empty objects to append to
+
+filename_store = []
+
+feature_vector_store = np.empty((0, 512))
+
+# pass in & featurise base image set
+
+for image in listdir(source_dir):
+    
+    # append image filename for future look up
+    filename_store.append(source_dir + image)
+
+    # preprocess the image
+    preprocessed_image = preprocess_image(source_dir + image)
+    
+    # extraxt the feature vectore
+    feature_vector = featurise_image(preprocessed_image)
+    
+    # append feature vector for similarity calculation
+    feature_vector_store = np.append(feature_vector_store, feature_vector, axis = 0)
+
+# save key objects for future use
+pickle.dump(filename_store, open('models/filename_store.p', 'wb'))
+pickle.dump(feature_vector_store, open('models/feature_vector_store.p', 'wb'))
 
 
 
