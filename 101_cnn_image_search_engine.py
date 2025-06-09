@@ -37,5 +37,4 @@ vgg = VGG16(input_shape=(img_width, img_height, num_channels), include_top = Fal
 model = Model(inputs = vgg.input, outputs = vgg.layers[-1].output)
 
 # save model file
-
 model.save("models/vgg16_search_engine.h5")
