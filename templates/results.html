@@ -2,21 +2,75 @@
 <html>
 <head>
     <title>Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #fafafa;
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        .query {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .query img {
+            height: 200px;
+            object-fit: contain;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .card img {
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        .distance {
+            font-size: 14px;
+            color: #555;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Query</h1>
-    <img src="/{{ query_path }}" height="200">
+    <div class="query">
+        <h1>Query Shoe</h1>
+        <img src="/{{ query_path }}" alt="Query Shoe">
+    </div>
 
-    <h2>Matches</h2>
-    <ul>
-    {% for r in results %}
-        <li>
-            <img src="/{{ r.filename }}" height="150">
-            <p>Distance: {{ "%.3f"|format(r.distance) }}</p>
-        </li>
-    {% endfor %}
-    </ul>
+    <h2>Similar Shoes</h2>
+    <div class="grid">
+        {% for r in results %}
+        <div class="card">
+            <img src="/{{ r.filename }}" alt="match">
+            <p class="distance">Distance: {{ "%.3f"|format(r.distance) }}</p>
+        </div>
+        {% endfor %}
+    </div>
 
-    <a href="/">Try another</a>
+    <a href="/">⬅ Back to Shop</a>
 </body>
 </html>

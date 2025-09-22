@@ -1,9 +1,10 @@
 import os
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 from werkzeug.utils import secure_filename
 from engine import search_image
 
 UPLOAD_DIR = "uploads"
+DATA_DIR = "data"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 app = Flask(__name__)
@@ -20,23 +21,22 @@ def data_files(filename):
 def uploaded_files(filename):
     return send_from_directory("uploads", filename)
 
-@app.route("/", methods=["GET", "POST"])
-def index():
-    if request.method == "POST":
-        file = request.files["query"]
-        if not file:
-            return render_template("index.html", error="No file uploaded")
 
-        filename = secure_filename(file.filename)
-        path = os.path.join(UPLOAD_DIR, filename)
-        file.save(path)
+@app.route("/", methods=["GET"])
+def shop():
+    """Show shoe shop with all images from data/."""
+    images = [f for f in os.listdir(DATA_DIR) if f.lower().endswith((".jpg", ".png", ".jpeg"))]
+    return render_template("shop.html", images=images)
 
-        results = search_image(path, top_k=8)
-        return render_template("results.html",
-                               query_path=path,
-                               results=results)
 
-    return render_template("index.html")
+@app.route("/search/<filename>", methods=["GET"])
+def search(filename):
+    """Search similar shoes given a chosen image from data folder."""
+    query_path = os.path.join(DATA_DIR, filename)
+    results = search_image(query_path, top_k=6)
+    return render_template("results.html",
+                           query_path=f"data/{filename}",
+                           results=results)
 
 
 if __name__ == "__main__":
