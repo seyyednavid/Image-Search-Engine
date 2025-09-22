@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Results</title>
+</head>
+<body>
+    <h1>Query</h1>
+    <img src="/{{ query_path }}" height="200">
+
+    <h2>Matches</h2>
+    <ul>
+    {% for r in results %}
+        <li>
+            <img src="/{{ r.filename }}" height="150">
+            <p>Distance: {{ "%.3f"|format(r.distance) }}</p>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <a href="/">Try another</a>
+</body>
+</html>
