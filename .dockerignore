@@ -1,0 +1,7 @@
+__pycache__/
+*.git
+*.DS_Store
+imgsearch_env/
+.dockerignore
+.gitignore
+CNN_image_search_engine.py

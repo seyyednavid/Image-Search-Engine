@@ -3,6 +3,7 @@ from flask import Flask, request, render_template, redirect, url_for
 from werkzeug.utils import secure_filename
 from engine import search_image
 
+
 UPLOAD_DIR = "uploads"
 DATA_DIR = "data"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -40,4 +41,4 @@ def search(filename):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

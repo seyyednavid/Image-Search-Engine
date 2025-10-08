@@ -5,8 +5,10 @@ from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.applications.vgg16 import preprocess_input
 from sklearn.neighbors import NearestNeighbors
 
+
+
 # Paths
-MODEL_PATH = "models/vgg16_search_engine.h5"
+MODEL_PATH = "models/vgg16_search_engine_compatible.h5"
 FILENAME_STORE_PATH = "models/filename_store.p"
 FEATURE_STORE_PATH = "models/feature_vector_store.p"
 
